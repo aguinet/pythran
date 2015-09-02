@@ -4,7 +4,11 @@ Command Line Interface
 
 This file shows some use case of Pythran on the command line.
 
-Firstly lets clear the working space::
+
+General Usage
+=============
+
+First lets clear the working space::
 
   $> rm -f cli_*
 
@@ -37,6 +41,15 @@ You can choose your optimization level by using ``-O`` flag::
   $> ls cli_foo.so
   cli_foo.so
 
+If you want to specify the path of generated file::
+
+  $> pythran cli_foo.py -o /tmp/cli_foo.so -DNDEBUG
+  $> ls /tmp/cli_foo.so
+  /tmp/cli_foo.so
+
+Advanced Usage
+==============
+
 Out of curiosity, you can check the generated output::
 
   $> pythran -E cli_foo.py
@@ -49,7 +62,7 @@ Pythran can also generate raw C++ code, using the ``-e`` switch::
 
   $> pythran -e cli_foo.py -o cli_foo.hpp
   $> printf '#include \"cli_foo.hpp\"\nusing namespace __pythran_cli_foo ; int main() { foo()(); return 0 ; }' > cli_foo.cpp
-  $> `pythran-config --compiler --cflags --libs` -std=c++11 cli_foo.cpp -o cli_foo -DNDEBUG
+  $> `pythran-config --compiler --cflags --libs` `python-config --cflags --libs` -std=c++11 cli_foo.cpp -o cli_foo -DNDEBUG
   $> ./cli_foo
   hello world
 
@@ -58,10 +71,9 @@ code can propagate constants using the Pythran ConstantFolding optimization::
 
   $> pythran -e cli_foo.py -p pythran.optimizations.ConstantFolding
 
-If you want to specify the path of generated file::
+If you're brave, you can generate native modules compatible with Python3. The
+hacky (and currently only) way to do so is by running::
 
-  $> pythran cli_foo.py -o /tmp/cli_foo.so -DNDEBUG
-  $> ls /tmp/cli_foo.so
-  /tmp/cli_foo.so
+  $> `pythran-config --compiler --cflags` `python3-config --cflags --libs` -lboost_python-py34 -lgmp -lgmpxx -std=c++11 cli_foo.cpp -shared -fPIC -o cli_foo -DNDEBUG
 
 To know more options about Pythran, you can check ``pythran --help`` :-)

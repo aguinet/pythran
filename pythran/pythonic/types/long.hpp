@@ -87,14 +87,23 @@ namespace pythonic
     void *storage = ((boost::python::converter::rvalue_from_python_storage<
                          mpz_class> *)(data))->storage.bytes;
     auto s = PyObject_Str(obj_ptr);
+#if PY_MAJOR_VERSION >= 3
+    new (storage) mpz_class(PyUnicode_AS_DATA(s));
+#else
     new (storage) mpz_class(PyString_AsString(s));
+#endif
     Py_DECREF(s);
     data->convertible = storage;
   }
 
   PyObject *custom_mpz_to_long::convert(const mpz_class &v)
   {
+#if PY_MAJOR_VERSION >= 3
+    auto vs = v.get_str();
+    auto s = PyUnicode_FromStringAndSize(vs.c_str(), vs.size());
+#else
     auto s = PyString_FromString(v.get_str().c_str());
+#endif
     auto l = PyNumber_Long(s);
     Py_DECREF(s);
     return l;

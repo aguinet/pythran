@@ -25,7 +25,11 @@ namespace pythonic
   struct _extract<long> {
     long operator()(PyObject *obj)
     {
+#if PY_MAJOR_VERSION >= 3
+      return PyLong_AS_LONG(obj);
+#else
       return PyInt_AS_LONG(obj);
+#endif
     }
   };
 
@@ -36,7 +40,11 @@ namespace pythonic
       if (PyFloat_Check(obj))
         return PyFloat_AS_DOUBLE(obj);
       else
-        return PyInt_AS_LONG(obj);
+#if PY_MAJOR_VERSION >= 3
+      return PyLong_AS_LONG(obj);
+#else
+      return PyInt_AS_LONG(obj);
+#endif
     }
   };
 }

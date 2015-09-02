@@ -719,7 +719,11 @@ namespace pythonic
 
   void *python_to_pythran<types::str>::convertible(PyObject *obj_ptr)
   {
+#if PY_MAJOR_VERSION >= 3
+    if (!PyUnicode_Check(obj_ptr))
+#else
     if (!PyString_Check(obj_ptr))
+#endif
       return 0;
     return obj_ptr;
   }
@@ -730,14 +734,23 @@ namespace pythonic
   {
     void *storage = ((boost::python::converter::rvalue_from_python_storage<
                          types::str> *)(data))->storage.bytes;
-    char *s = PyString_AS_STRING(obj_ptr);
+#if PY_MAJOR_VERSION >= 3
+    char const *s = PyUnicode_AS_DATA(obj_ptr);
+    new (storage) types::str(s, PyUnicode_GET_SIZE(obj_ptr)); //FIXME: only works for ascii
+#else
+    char const *s = PyString_AS_STRING(obj_ptr);
     new (storage) types::str(s, PyString_GET_SIZE(obj_ptr));
+#endif
     data->convertible = storage;
   }
 
   PyObject *custom_pythran_string_to_str::convert(const types::str &v)
   {
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_FromStringAndSize(v.c_str(), v.size());
+#else
     return PyString_FromStringAndSize(v.c_str(), v.size());
+#endif
   }
 
   pythran_to_python<types::str>::pythran_to_python()

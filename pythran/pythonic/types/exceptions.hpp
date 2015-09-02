@@ -73,7 +73,9 @@ namespace pythonic
     CLASS_EXCEPTION_IMPL(GeneratorExit, BaseException);
     CLASS_EXCEPTION_IMPL(Exception, BaseException);
     CLASS_EXCEPTION_IMPL(StopIteration, Exception);
+#if PY_MAJOR_VERSION < 3
     CLASS_EXCEPTION_IMPL(StandardError, Exception);
+#endif
     CLASS_EXCEPTION_IMPL(Warning, Exception);
     CLASS_EXCEPTION_IMPL(BytesWarning, Warning);
     CLASS_EXCEPTION_IMPL(UnicodeWarning, Warning);
@@ -84,6 +86,24 @@ namespace pythonic
     CLASS_EXCEPTION_IMPL(RuntimeWarning, Warning);
     CLASS_EXCEPTION_IMPL(PendingDeprecationWarning, Warning);
     CLASS_EXCEPTION_IMPL(DeprecationWarning, Warning);
+#if PY_MAJOR_VERSION >= 3
+    CLASS_EXCEPTION_IMPL(BufferError, Exception);
+    CLASS_EXCEPTION_IMPL(ArithmeticError, Exception);
+    CLASS_EXCEPTION_IMPL(AssertionError, Exception);
+    CLASS_EXCEPTION_IMPL(AttributeError, Exception);
+    CLASS_EXCEPTION_IMPL(EnvironmentError, Exception);
+    CLASS_EXCEPTION_IMPL(EOFError, Exception);
+    CLASS_EXCEPTION_IMPL(ImportError, Exception);
+    CLASS_EXCEPTION_IMPL(LookupError, Exception);
+    CLASS_EXCEPTION_IMPL(MemoryError, Exception);
+    CLASS_EXCEPTION_IMPL(NameError, Exception);
+    CLASS_EXCEPTION_IMPL(ReferenceError, Exception);
+    CLASS_EXCEPTION_IMPL(RuntimeError, Exception);
+    CLASS_EXCEPTION_IMPL(SyntaxError, Exception);
+    CLASS_EXCEPTION_IMPL(SystemError, Exception);
+    CLASS_EXCEPTION_IMPL(TypeError, Exception);
+    CLASS_EXCEPTION_IMPL(ValueError, Exception);
+#else
     CLASS_EXCEPTION_IMPL(BufferError, StandardError);
     CLASS_EXCEPTION_IMPL(ArithmeticError, StandardError);
     CLASS_EXCEPTION_IMPL(AssertionError, StandardError);
@@ -100,6 +120,7 @@ namespace pythonic
     CLASS_EXCEPTION_IMPL(SystemError, StandardError);
     CLASS_EXCEPTION_IMPL(TypeError, StandardError);
     CLASS_EXCEPTION_IMPL(ValueError, StandardError);
+#endif
     CLASS_EXCEPTION_IMPL(FloatingPointError, ArithmeticError);
     CLASS_EXCEPTION_IMPL(OverflowError, ArithmeticError);
     CLASS_EXCEPTION_IMPL(ZeroDivisionError, ArithmeticError);
@@ -208,7 +229,9 @@ IMPL_EXCEPTION_GETATTR(KeyboardInterrupt);
 IMPL_EXCEPTION_GETATTR(GeneratorExit);
 IMPL_EXCEPTION_GETATTR(Exception);
 IMPL_EXCEPTION_GETATTR(StopIteration);
+#if PY_MAJOR_VERSION < 3
 IMPL_EXCEPTION_GETATTR(StandardError);
+#endif
 IMPL_EXCEPTION_GETATTR(Warning);
 IMPL_EXCEPTION_GETATTR(BytesWarning);
 IMPL_EXCEPTION_GETATTR(UnicodeWarning);
@@ -310,7 +333,9 @@ namespace pythonic
   REGISTER_EXCEPTION_TRANSLATOR_IMPL(GeneratorExit);
   REGISTER_EXCEPTION_TRANSLATOR_IMPL(Exception);
   REGISTER_EXCEPTION_TRANSLATOR_IMPL(StopIteration);
+#if PY_MAJOR_VERSION < 3
   REGISTER_EXCEPTION_TRANSLATOR_IMPL(StandardError);
+#endif
   REGISTER_EXCEPTION_TRANSLATOR_IMPL(Warning);
   REGISTER_EXCEPTION_TRANSLATOR_IMPL(BytesWarning);
   REGISTER_EXCEPTION_TRANSLATOR_IMPL(UnicodeWarning);

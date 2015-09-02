@@ -128,7 +128,6 @@ def run():
         output.extend(('-I' + include)
                       for include in extension['include_dirs'])
         output.append('-I' + numpy.get_include())
-        output.append('-I' + distutils.sysconfig.get_python_inc())
 
     if args.libs:
         output.extend(('-L' + include)
@@ -136,9 +135,6 @@ def run():
         output.append('-L' + distutils.sysconfig.get_config_var('LIBPL'))
         output.extend(('-l' + include)
                       for include in extension['libraries'])
-        output.extend(distutils.sysconfig.get_config_var('LIBS').split())
-        output.append('-lpython' +
-                      distutils.sysconfig.get_config_var('VERSION'))
 
     if output:
         print(' '.join(output))

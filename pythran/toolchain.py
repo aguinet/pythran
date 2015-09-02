@@ -169,8 +169,10 @@ def generate_cxx(module_name, code, specs=None, optimizations=None):
                             )
         mod.add_to_includes(*map(Include, _extract_specs_dependencies(specs)))
         mod.add_to_includes(*content.body)
+
+        # the lambda is here to harmonize inconsistent return type between py2 and py3
         mod.add_to_init(
-            Line('#ifdef PYTHONIC_TYPES_NDARRAY_HPP\nimport_array()\n#endif'))
+            Line('#ifdef PYTHONIC_TYPES_NDARRAY_HPP\n[](){import_array(); return NUMPY_IMPORT_ARRAY_RETVAL;}();\n#endif'))
 
         # topologically sorted exceptions based on the inheritance hierarchy.
         # needed because otherwise boost python register_exception handlers
