@@ -460,6 +460,7 @@ namespace pythonic
       numpy_gexpr &operator=(E const &expr);
 
       numpy_gexpr &operator=(numpy_gexpr const &expr);
+      numpy_gexpr &operator=(numpy_gexpr&& expr) = default;
 
       template <class Op, class E>
       typename std::enable_if<may_overlap_gexpr<E>::value, numpy_gexpr &>::type
