@@ -428,6 +428,9 @@ namespace pythonic
 
       numpy_expr(Args const &... args);
 
+      numpy_expr& operator=(numpy_expr const&) = default;
+      numpy_expr& operator=(numpy_expr&&) = default;
+
       template <int... I>
       const_iterator _begin(utils::seq<I...>) const;
       const_iterator begin() const;

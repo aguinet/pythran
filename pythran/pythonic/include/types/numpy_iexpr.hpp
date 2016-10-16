@@ -75,6 +75,7 @@ namespace pythonic
       template <class E>
       numpy_iexpr &operator=(E const &expr);
       numpy_iexpr &operator=(numpy_iexpr const &expr);
+      numpy_iexpr &operator=(numpy_iexpr&& expr) = default;
 
       template <class E>
       numpy_iexpr &operator+=(E const &expr);
